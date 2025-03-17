@@ -18,4 +18,8 @@ public abstract class Vehicle implements Llogable{
         this.rodes = rodes;
         this.etiquetaAmbiental = etiquetaAmbiental;
     }
+
+    public String getMatricula() {
+        return matricula;
+    }
 }
