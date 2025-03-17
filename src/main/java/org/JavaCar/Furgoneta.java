@@ -7,4 +7,8 @@ public class Furgoneta extends Vehicle{
         super(matricula, marca, model, preuBase, motor, rodes, "E"); // Etiqueta ambiental per defecte
         this.capacitatCarga = capacitatCarga;
     }
+
+    public double getCapacitatCarga() {
+        return capacitatCarga;
+    }
 }
