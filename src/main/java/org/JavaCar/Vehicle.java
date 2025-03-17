@@ -34,4 +34,9 @@ public abstract class Vehicle implements Llogable{
     public double getPreuBase() {
         return preuBase;
     }
+
+    public Motor getMotor() {
+        return motor;
+    }
+
 }
