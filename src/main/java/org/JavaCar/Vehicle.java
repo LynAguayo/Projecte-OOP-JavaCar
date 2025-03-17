@@ -39,4 +39,7 @@ public abstract class Vehicle implements Llogable{
         return motor;
     }
 
+    public List<Roda> getRodes() {
+        return rodes;
+    }
 }
