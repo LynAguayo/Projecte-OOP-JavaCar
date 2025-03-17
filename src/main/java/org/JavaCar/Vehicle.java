@@ -22,4 +22,9 @@ public abstract class Vehicle implements Llogable{
     public String getMatricula() {
         return matricula;
     }
+
+    public String getMarca() {
+        return marca;
+    }
+
 }
