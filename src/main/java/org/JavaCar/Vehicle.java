@@ -27,4 +27,8 @@ public abstract class Vehicle implements Llogable{
         return marca;
     }
 
+    public String getModel() {
+        return model;
+    }
+
 }
