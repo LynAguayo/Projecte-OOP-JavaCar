@@ -56,4 +56,8 @@ public abstract class Vehicle implements Llogable{
             default: return "Sense Etiqueta";
         }
     }
+
+    public void recalcularEtiquetaAmbiental() {
+        this.etiquetaAmbiental = calcularEtiquetaAmbiental();
+    }
 }
