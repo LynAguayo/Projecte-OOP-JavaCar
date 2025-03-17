@@ -42,4 +42,8 @@ public abstract class Vehicle implements Llogable{
     public List<Roda> getRodes() {
         return rodes;
     }
+
+    public String getEtiquetaAmbiental() {
+        return etiquetaAmbiental;
+    }
 }
