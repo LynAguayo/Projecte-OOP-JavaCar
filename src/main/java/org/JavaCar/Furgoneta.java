@@ -11,4 +11,13 @@ public class Furgoneta extends Vehicle{
     public double getCapacitatCarga() {
         return capacitatCarga;
     }
+
+    @Override
+    public double calcularPreu(int dies) {
+        double preuFinal = preuBase * dies;
+        if (capacitatCarga > 1000) {
+            preuFinal += 10 * dies;
+        }
+        return preuFinal;
+    }
 }
