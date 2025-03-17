@@ -2,6 +2,7 @@ package org.JavaCar;
 
 public class Roda {
 
+    // Variables
     public String marca;
     public double diametre;
 
