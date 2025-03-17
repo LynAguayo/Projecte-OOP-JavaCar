@@ -11,4 +11,9 @@ public class Cotxe extends Vehicle{
     public int getNombrePlaces() {
         return nombrePlaces;
     }
+
+    @Override
+    public double calcularPreu(int dies) {
+        return preuBase * dies;
+    }
 }
