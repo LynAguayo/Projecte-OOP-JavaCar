@@ -19,5 +19,11 @@ public class Roda {
         this.marca = marca;
     }
 
-
+    // Getter i Setter del Diametre
+    public double getDiametre() {
+        return diametre;
+    }
+    public void setDiametre(double diametre) {
+        this.diametre = diametre;
+    }
 }
