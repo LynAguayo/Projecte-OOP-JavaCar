@@ -16,7 +16,7 @@ public abstract class Vehicle implements Llogable{
         this.preuBase = preuBase;
         this.motor = motor;
         this.rodes = rodes;
-        this.etiquetaAmbiental = etiquetaAmbiental;
+        this.etiquetaAmbiental = calcularEtiquetaAmbiental();
     }
 
     public String getMatricula() {
@@ -45,5 +45,15 @@ public abstract class Vehicle implements Llogable{
 
     public String getEtiquetaAmbiental() {
         return etiquetaAmbiental;
+    }
+
+    private String calcularEtiquetaAmbiental() {
+        switch (motor.getTipus().toLowerCase()) {
+            case "electric": return "0 Emissions";
+            case "hibrid": return "ECO";
+            case "gasolina": return "C";
+            case "diesel": return "B";
+            default: return "Sense Etiqueta";
+        }
     }
 }
