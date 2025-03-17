@@ -33,6 +33,6 @@ public class Motor {
 
     @Override
     public String toString() {
-        return "Tipus del motor: " + tipus + " / Potencia del motor: " + potencia;
+        return "Motor {Tipus: " + tipus + " / Potencia: " + potencia;
     }
 }
