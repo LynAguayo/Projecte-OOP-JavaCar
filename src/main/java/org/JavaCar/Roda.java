@@ -11,5 +11,13 @@ public class Roda {
         this.diametre = diametre;
     }
 
+    // Getter i Setter de la Marca
+    public String getMarca() {
+        return marca;
+    }
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
 
 }
