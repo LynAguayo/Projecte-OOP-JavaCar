@@ -7,4 +7,5 @@ public abstract class Vehicle implements Llogable{
     protected double preuBase;
     protected Motor motor;
     protected List<Roda> rodes;
+    protected String etiquetaAmbiental;
 }
