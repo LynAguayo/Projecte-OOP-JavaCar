@@ -2,13 +2,13 @@ package org.JavaCar;
 
 public class Motor {
     // Variables
-    public String tipus;
-    public double potencia;
+    private String tipus;
+    private double potencia;
 
     // Constructor per inicialitzar el motor
     public Motor(String tipus, double potencia) {
         this.tipus = tipus;
-        this.potencia = potencia;
+        setPotencia(potencia);
     }
 
     // Getter i Setter de Tipus
@@ -24,6 +24,15 @@ public class Motor {
         return potencia;
     }
     public void setPotencia(double potencia) {
-        this.potencia = potencia;
+        if (potencia > 0) {
+            this.potencia = potencia;
+        } else {
+            throw new IllegalArgumentException("La potència ha de ser un valor positiu!");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Tipus del motor: " + tipus + " / Potencia del motor: " + potencia;
     }
 }
