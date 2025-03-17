@@ -3,8 +3,8 @@ package org.JavaCar;
 public class Roda {
 
     // Variables
-    public String marca;
-    public double diametre;
+    private String marca;
+    private double diametre;
 
     // Constructor per inicialitzar la roda
     public Roda(String marca, double diametre) {
@@ -26,5 +26,10 @@ public class Roda {
     }
     public void setDiametre(double diametre) {
         this.diametre = diametre;
+    }
+
+    @Override
+    public String toString() {
+        return "Roda{ Marca: " + marca + " / Diàmetre: " + diametre+ "}";
     }
 }
