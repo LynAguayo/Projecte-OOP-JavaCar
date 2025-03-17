@@ -15,5 +15,8 @@ public class Motor {
     public String getTipus() {
         return tipus;
     }
+    public void setTipus(String tipus) {
+        this.tipus = tipus;
+    }
 
 }
