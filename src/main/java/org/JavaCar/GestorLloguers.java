@@ -16,7 +16,7 @@ public class GestorLloguers {
     }
 
     public static List<Vehicle> filtrarPerPreu(List<Vehicle> vehicles, double preuMax) {
-
+        return vehicles.stream().filter(v -> v.getPreuBase() <= preuMax).collect(Collectors.toList());
     }
 
 }
