@@ -12,6 +12,7 @@ public class GestorLloguers {
         for (Vehicle v : vehicles) {
             total += v.calcularPreu(dies);
         }
+        return total;
     }
 
 
