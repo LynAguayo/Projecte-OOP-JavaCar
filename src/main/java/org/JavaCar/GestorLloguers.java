@@ -9,7 +9,9 @@ public class GestorLloguers {
      */
     public static double calcularIngressosTotals(List<Vehicle> vehicles, int dies){
         double total = 0;
-
+        for (Vehicle v : vehicles) {
+            total += v.calcularPreu(dies);
+        }
     }
 
 
