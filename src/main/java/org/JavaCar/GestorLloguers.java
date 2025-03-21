@@ -8,7 +8,9 @@ public class GestorLloguers {
      * @return El total d'ingressos generat pel lloguer.
      */
     public static double calcularIngressosTotals(List<Vehicle> vehicles, int dies){
+        double total = 0;
 
     }
+
 
 }
