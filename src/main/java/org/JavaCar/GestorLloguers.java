@@ -15,5 +15,8 @@ public class GestorLloguers {
         return total;
     }
 
+    public static List<Vehicle> filtrarPerPreu(List<Vehicle> vehicles, double preuMax) {
+
+    }
 
 }
