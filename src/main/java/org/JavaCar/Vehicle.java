@@ -76,4 +76,162 @@ public abstract class Vehicle implements Llogable{
         }
     }
 
+    // Mètode principal per calcular l'etiqueta ambiental
+    private String calcularEtiquetaAmbiental() {
+        if (motor == null) {
+            return EtiquetaAmbiental.SENSE_ETIQUETA.toString();
+        }
+
+        int anyMatriculacio = estimarAnyMatriculacioPerMatricula(matricula);
+        int euroStandard = estimarEuroStandard(anyMatriculacio);
+        String tipusMotor = motor.getTipus().toLowerCase();
+
+        // Vehicles elèctrics
+        if (tipusMotor.equals("electric")) {
+            return EtiquetaAmbiental.ZERO_EMISSIONS.toString();
+        }
+
+        // Càlcul per cada tipus de vehicle
+        if (this instanceof Cotxe) {
+            return calcularEtiquetaCotxe(tipusMotor, euroStandard);
+        }
+
+        if (this instanceof Furgoneta) {
+            return calcularEtiquetaFurgoneta(tipusMotor, euroStandard);
+        }
+
+        if (this instanceof Moto) {
+            return calcularEtiquetaMoto(tipusMotor, euroStandard);
+        }
+
+        // Vehícle de més de 8 places
+        if (this instanceof Cotxe && ((Cotxe) this).getNombrePlaces() > 8) {
+            return calcularEtiquetaVehiclesGrans(euroStandard);
+        }
+
+        return EtiquetaAmbiental.SENSE_ETIQUETA.toString();
+    }
+
+    // Recalcula l'etiqueta ambiental
+    public void recalcularEtiquetaAmbiental() {
+        this.etiquetaAmbiental = calcularEtiquetaAmbiental();
+    }
+
+    // Calcula etiqueta per a cotxes
+    private String calcularEtiquetaCotxe(String tipusMotor, int euroStandard) {
+        if (tipusMotor.equals("gasolina")) {
+            if (euroStandard >= 4) {
+                return EtiquetaAmbiental.C.toString();
+            } else if (euroStandard == 3) {
+                return EtiquetaAmbiental.B.toString();
+            } else {
+                return EtiquetaAmbiental.SENSE_ETIQUETA.toString();
+            }
+        }
+
+        if (tipusMotor.equals("diesel")) {
+            if (euroStandard >= 6) {
+                return EtiquetaAmbiental.C.toString();
+            } else if (euroStandard >= 4) {
+                return EtiquetaAmbiental.B.toString();
+            } else {
+                return EtiquetaAmbiental.SENSE_ETIQUETA.toString();
+            }
+        }
+
+        if (tipusMotor.equals("hibrid") || tipusMotor.equals("gnc") || tipusMotor.equals("glp")) {
+            if (euroStandard >= 4) {
+                return EtiquetaAmbiental.ECO.toString();
+            } else {
+                return EtiquetaAmbiental.SENSE_ETIQUETA.toString();
+            }
+        }
+
+        return EtiquetaAmbiental.SENSE_ETIQUETA.toString();
+    }
+
+    // Calcula etiqueta per a furgonetes
+    private String calcularEtiquetaFurgoneta(String tipusMotor, int euroStandard) {
+        if (tipusMotor.equals("diesel")) {
+            if (euroStandard >= 6) {
+                return EtiquetaAmbiental.C.toString();
+            } else if (euroStandard >= 4) {
+                return EtiquetaAmbiental.B.toString();
+            } else {
+                return EtiquetaAmbiental.SENSE_ETIQUETA.toString();
+            }
+        }
+
+        if (tipusMotor.equals("hibrid") || tipusMotor.equals("gnc") || tipusMotor.equals("glp")) {
+            if (euroStandard >= 6) {
+                return EtiquetaAmbiental.ECO.toString();
+            } else {
+                return EtiquetaAmbiental.SENSE_ETIQUETA.toString();
+            }
+        }
+
+        return EtiquetaAmbiental.SENSE_ETIQUETA.toString();
+    }
+
+    // Calcula etiqueta per a motos
+    private String calcularEtiquetaMoto(String tipusMotor, int euroStandard) {
+        if (tipusMotor.equals("gasolina")) {
+            if (euroStandard >= 4) {
+                return EtiquetaAmbiental.C.toString();
+            } else if (euroStandard == 3) {
+                return EtiquetaAmbiental.C.toString();
+            } else if (euroStandard == 2) {
+                return EtiquetaAmbiental.B.toString();
+            } else {
+                return EtiquetaAmbiental.SENSE_ETIQUETA.toString();
+            }
+        }
+
+        if (tipusMotor.equals("hibrid")) {
+            return EtiquetaAmbiental.ECO.toString();
+        }
+
+        return EtiquetaAmbiental.SENSE_ETIQUETA.toString();
+    }
+
+    // Calcula etiqueta per a vehicles grans (+8 places)
+    private String calcularEtiquetaVehiclesGrans(int euroStandard) {
+        if (euroStandard >= 6) {
+            return EtiquetaAmbiental.C.toString();
+        } else if (euroStandard >= 4) {
+            return EtiquetaAmbiental.B.toString();
+        } else {
+            return EtiquetaAmbiental.SENSE_ETIQUETA.toString();
+        }
+    }
+
+    // Estima l'any de matriculació a partir de la matrícula
+    private int estimarAnyMatriculacioPerMatricula(String matricula) {
+        try {
+            int any = Integer.parseInt(matricula.substring(0, 2));
+            if (any <= ANY_TRANSICIO_SEGLE) {
+                return ANY_BASE + any; // matricules 00-30 --> 2000-2030
+            } else {
+                return ANY_BASE_ANTIC + any; // // matrícules 31-99 --> 1931-1999
+            }
+        } catch (Exception e) {
+            return 2000; // per defecte
+        }
+    }
+
+    // Determina l'estàndard Euro segons l'any
+    private int estimarEuroStandard(int anyMatriculacio) {
+        if (anyMatriculacio < EURO_2_MAX_ANY) {
+            return 2;
+        } else if (anyMatriculacio < EURO_3_MAX_ANY) {
+            return 3;
+        } else if (anyMatriculacio < EURO_4_MAX_ANY) {
+            return 4;
+        } else if (anyMatriculacio < EURO_5_MAX_ANY) {
+            return 5;
+        } else {
+            return 6; // 2015 o posterior
+        }
+    }
+
 }
