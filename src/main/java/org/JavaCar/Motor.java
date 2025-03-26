@@ -21,5 +21,9 @@ public class Motor {
         return potencia;
     }
 
-
+    @Override
+    public String toString() {
+        return "Motor {" +
+                "Tipus: " + tipus + " / Potencia: " + potencia + "}";
+    }
 }
