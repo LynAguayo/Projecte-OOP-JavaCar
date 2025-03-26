@@ -31,4 +31,17 @@ public class Client {
     public String getTipus() {
         return tipus;
     }
+
+    // Setters
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setAdreca(String adreca) {
+        this.adreca = adreca;
+    }
+
+    public void setTipus(String tipus) {
+        this.tipus = tipus;
+    }
 }
