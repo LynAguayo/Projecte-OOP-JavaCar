@@ -234,4 +234,34 @@ public abstract class Vehicle implements Llogable{
         }
     }
 
+    // Converteix vehicle a string per guardar a fitxer
+    public String toFileString() {
+        return String.join(";",
+                getClass().getSimpleName(),
+                matricula,
+                marca,
+                model,
+                String.valueOf(preuBase),
+                motor.getTipus(),
+                String.valueOf(motor.getPotencia()),
+                String.valueOf(rodes != null ? rodes.length : 0)
+        );
+    }
+
+    // Crea vehicle a partir d'un string
+    public static Vehicle fromFileString(String linia) {
+        String[] parts = linia.split(";");
+        String tipus = parts[0].toLowerCase();
+
+        switch (tipus) {
+            case "cotxe":
+                return Cotxe.fromFileString(parts);
+            case "moto":
+                return Moto.fromFileString(parts);
+            case "furgoneta":
+                return Furgoneta.fromFileString(parts);
+            default:
+                throw new IllegalArgumentException("Tipus de vehicle desconegut: " + parts[0]);
+        }
+    }
 }
