@@ -17,6 +17,11 @@ public class Roda {
         return marca;
     }
 
+    // Getter del Diametre
+    public double getDiametre() {
+        return diametre;
+    }
+
 
 }
 
