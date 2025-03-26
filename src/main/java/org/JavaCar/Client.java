@@ -44,4 +44,13 @@ public class Client {
     public void setTipus(String tipus) {
         this.tipus = tipus;
     }
+
+    @Override
+    public String toFileString() {
+        return dni + ";" + nom + ";" + adreca + ";" + tipus;
+    }
+    public static Client fromFileString(String linia) {
+        String[] parts = linia.split(";");
+        return new Client(parts[0], parts[1], parts[2], parts[3]);
+    }
 }
