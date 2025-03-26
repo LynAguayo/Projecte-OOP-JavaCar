@@ -22,6 +22,11 @@ public class Roda {
         return diametre;
     }
 
+    @Override
+    public String toString() {
 
+        return "Roda{ " +
+                "Marca: " + marca + " / Diàmetre: " + diametre+ "}";
+    }
 }
 
