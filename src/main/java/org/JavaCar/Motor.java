@@ -16,5 +16,10 @@ public class Motor {
         return tipus;
     }
 
+    // Getter de Potencia
+    public double getPotencia() {
+        return potencia;
+    }
+
 
 }
