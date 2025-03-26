@@ -14,4 +14,21 @@ public class Client {
         this.adreca = adreca;
         this.tipus = tipus;
     }
+
+    // Getters
+    public String getDni() {
+        return dni;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public String getAdreca() {
+        return adreca;
+    }
+
+    public String getTipus() {
+        return tipus;
+    }
 }
