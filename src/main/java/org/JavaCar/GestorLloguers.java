@@ -22,5 +22,21 @@ public class GestorLloguers {
         return total;
     }
 
+    /**
+     * Filtrar la llista de vehicles segons un preu màxim de lloguer diari.
+     * @param vehicles Llista de vehicles disponibles per al lloguer.
+     * @param preuMax Preu màxim permès per al lloguer
+     * @return Una llista de vehicles que tenen un preu base menor o igual al preu màxim indicat
+     */
+    public static List<Vehicle> filtrarPerPreu(List<Vehicle> vehicles, double preuMax) {
+        List<Vehicle> vehiclesFiltrats = new ArrayList<>();
 
+        for (int i = 0; i < vehicles.size(); i++) {
+            Vehicle vehicle = vehicles.get(i);
+            if (vehicle.getPreuBase() <= preuMax) {
+                vehiclesFiltrats.add(vehicle);
+            }
+        }
+        return vehiclesFiltrats;
+    }
 }
