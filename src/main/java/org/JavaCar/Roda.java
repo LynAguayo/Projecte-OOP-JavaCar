@@ -6,6 +6,12 @@ public class Roda {
     private String marca;
     private double diametre;
 
+    // Constructor per inicialitzar la roda
+    public Roda(String marca, double diametre) {
+        this.marca = marca;
+        this.diametre = diametre;
+    }
+
 
 }
 
