@@ -11,5 +11,10 @@ public class Motor {
         this.potencia = potencia;
     }
 
+    // Getter de Tipus
+    public String getTipus() {
+        return tipus;
+    }
+
 
 }
