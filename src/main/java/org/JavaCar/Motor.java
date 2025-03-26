@@ -3,10 +3,10 @@ package org.JavaCar;
 public class Motor {
     // Variables
     private String tipus;
-    private double potencia;
+    private int potencia;
 
     // Constructor per inicialitzar el motor
-    public Motor(String tipus, double potencia) {
+    public Motor(String tipus, int potencia) {
         this.tipus = tipus;
         this.potencia = potencia;
     }
@@ -17,7 +17,7 @@ public class Motor {
     }
 
     // Getter de Potencia
-    public double getPotencia() {
+    public int getPotencia() {
         return potencia;
     }
 
