@@ -45,7 +45,6 @@ public class Client {
         this.tipus = tipus;
     }
 
-    @Override
     public String toFileString() {
         return dni + ";" + nom + ";" + adreca + ";" + tipus;
     }
