@@ -67,4 +67,13 @@ public abstract class Vehicle implements Llogable{
         this.preuBase = preuBase;
     }
 
+    // Valida el format de la matrícula
+    private void validarMatricula(String matricula) {
+        if (matricula == null || !matricula.matches(PATRO_MATRICULA)) {
+            throw new IllegalArgumentException(
+                    "Matrícula invàlida. Ha de tenir 4 números seguits de 3 lletres majúscules. Exemple: 1234ABC"
+            );
+        }
+    }
+
 }
