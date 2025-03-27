@@ -83,3 +83,60 @@ public class ClientService {
             System.out.println("Error al guardar llista de clients: " + e.getMessage());
         }
     }
+
+    // Mètode per afegir punts a un client segons el lloguer
+    public void afegirPunts(String dni, String tipusVehicle, int dies, double preuTotal) {
+        Client client = trobarClient(dni);
+        if (client == null) return;
+
+        int punts = 0;
+
+        // Punts por tipus de vehícle ecològic
+        if ("ECO".equalsIgnoreCase(tipusVehicle)) {
+            punts += dies * PUNTS_PER_DIA_ECO;
+        } else if ("0 Emissions".equalsIgnoreCase(tipusVehicle)) {
+            punts += dies * PUNTS_PER_DIA_ZERO_EM;
+        }
+
+        // Punts per gastar (1 punt per cada 100€)
+        punts += (int)(preuTotal / 100) * PUNTS_PER_100_EURO;
+
+        if (punts > 0) {
+            client.setPunts(client.getPunts() + punts);
+            actualitzarClient(client);
+            System.out.printf("Has guanyat %d punts! Total acumulat: %d%n", punts, client.getPunts());
+        }
+    }
+
+    // Canvia punts per descompte (100 punts = 5€)
+    public double canviarPunts(String dni, int punts) throws Exception {
+        if (punts < MIN_PUNTS_CANVI || punts % MIN_PUNTS_CANVI != 0) {
+            throw new Exception(String.format("Els punts han de ser múltiples de %d", MIN_PUNTS_CANVI));
+        }
+
+        Client client = trobarClient(dni);
+        if (client == null) {
+            throw new Exception("Client no trobat");
+        }
+
+        if (client.getPunts() < punts) {
+            throw new Exception(String.format("Punts insuficients. Tens %d i necessites %d", client.getPunts(), punts));
+        }
+
+        client.setPunts(client.getPunts() - punts);
+        actualitzarClient(client);
+
+        return (punts / MIN_PUNTS_CANVI) * EUROS_PER_CANVI;
+    }
+
+    // Retorna true si el DNI ya está registrado
+    public boolean dniEstaRegistrat(String dni) {
+        return trobarClient(dni) != null;
+    }
+
+    // Retorna els punts d'un client
+    public int obtenirPunts(String dni) {
+        Client client = trobarClient(dni);
+        return client != null ? client.getPunts() : 0;
+    }
+}
