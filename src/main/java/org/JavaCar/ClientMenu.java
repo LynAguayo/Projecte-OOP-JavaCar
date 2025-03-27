@@ -65,3 +65,74 @@ public class ClientMenu {
             }
         } while (opcio != 4);
     }
+
+    // Mètode per mostrar els vehicles disponibles
+    private void mostrarDisponibilitat() {
+        System.out.println("\nVEHICLES DISPONIBLES:");
+        List<Vehicle> vehicles = vehicleService.obtenirTotsVehicles();
+        List<Vehicle> disponibles = new ArrayList<>();
+
+        String avui = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+
+        for (Vehicle v : vehicles) {
+            if (lloguerService.esVehicleDisponible(v.getMatricula(), avui, 1)) {
+                disponibles.add(v);
+            }
+        }
+
+        if (disponibles.isEmpty()) {
+            System.out.println("No hi ha vehicles disponibles actualment.");
+        } else {
+            System.out.println("| Matrícula | Marca     | Model    | Preu/dia | Etiqueta |");
+            System.out.println("|-----------|-----------|----------|----------|----------|");
+
+            for (Vehicle v : disponibles) {
+                System.out.printf("| %-9s | %-9s | %-8s | %8.2f€ | %-8s |%n",
+                        v.getMatricula(), v.getMarca(), v.getModel(),
+                        v.getPreuBase(), v.getEtiquetaAmbiental());
+            }
+        }
+    }
+
+    // Mètode per fer un lloguer
+    private void realitzarLloguer() {
+        mostrarDisponibilitat();
+        String matricula = AjudaEntrada.demanarText("\nIntrodueix matrícula del vehicle: ");
+
+        Vehicle vehicle = vehicleService.getVehicleByMatricula(matricula);
+        if (vehicle == null) {
+            System.out.println("No existeix cap vehicle amb aquesta matrícula.");
+            return;
+        }
+
+        int dies = AjudaEntrada.demanarNumero("Dies de lloguer (1-30): ", 1, 30);
+
+        try {
+            double cost = lloguerService.realitzarLloguer(client.getDni(), matricula, dies);
+            System.out.printf("\nLloguer realitzat correctament.%nCost total: %.2f€%n", cost);
+
+            if ("ECO".equalsIgnoreCase(vehicle.getEtiquetaAmbiental()) || "0 Emissions".equalsIgnoreCase(vehicle.getEtiquetaAmbiental())) {
+                clientService.afegirPunts(client.getDni(), vehicle.getEtiquetaAmbiental(), dies, cost);
+            }
+        } catch (Exception e) {
+            System.out.println("Error en el lloguer: " + e.getMessage());
+        }
+
+    }
+
+    // Mètode per cancel·lar un lloguer
+    private void cancelarLloguer() {
+        System.out.println("\n--- CANCEL·LAR LLOGUER ---");
+        String idLloguer = AjudaEntrada.demanarText("Introdueix ID de lloguer a cancel·lar: ");
+
+        try {
+            boolean cancelat = lloguerService.cancelarLloguer(idLloguer, client.getDni());
+            if (cancelat) {
+                System.out.println("Lloguer cancel·lat correctament.");
+            } else {
+                System.out.println("No s'ha pogut cancel·lar el lloguer (ID no trobat o ja està cancel·lat).");
+            }
+        } catch (Exception e) {
+            System.out.println("Error en cancel·lar: " + e.getMessage());
+        }
+    }
