@@ -159,3 +159,87 @@ public class ClientMenu {
             }
         } while (opcio != 4);
     }
+
+    // Mètode per fer una reserva
+    private void ferReserva() {
+        mostrarDisponibilitat();
+        String matricula = AjudaEntrada.demanarText("\nIntrodueix matrícula del vehicle: ");
+        String dataInici = AjudaEntrada.demanarText("Data d'inici (dd/mm/aaaa): ");
+        int dies = AjudaEntrada.demanarNumero("Nombre de dies: ", 1, 30);
+
+        try {
+            String codiReserva = lloguerService.ferReserva(client.getDni(), matricula, dataInici, dies);
+            System.out.println("\nReserva realitzada correctament.");
+            System.out.println("Codi de reserva: " + codiReserva);
+        } catch (Exception e) {
+            System.out.println("Error en fer reserva: " + e.getMessage());
+        }
+    }
+
+    // Mètode per modificar una reserva
+    private void modificarReserva() {
+        System.out.println("\n--- MODIFICAR RESERVA ---");
+        String codi = AjudaEntrada.demanarText("Introdueix codi de reserva: ");
+        String novaData = AjudaEntrada.demanarText("Nova data d'inici (dd/mm/aaaa): ");
+        int nousDies = AjudaEntrada.demanarNumero("Nous dies de lloguer: ", 1, 30);
+
+        try {
+            boolean actualitzada = lloguerService.modificarReserva(codi, client.getDni(), novaData, nousDies);
+            if (actualitzada) {
+                System.out.println("Reserva modificada correctament.");
+            } else {
+                System.out.println("No s'ha pogut modificar la reserva.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error en modificar reserva: " + e.getMessage());
+        }
+    }
+
+    // Mètode per cancel·lar una reserva
+    private void cancelarReserva() {
+        System.out.println("\n--- CANCEL·LAR RESERVA ---");
+        String codi = AjudaEntrada.demanarText("Introdueix codi de reserva: ");
+
+        try {
+            boolean cancelada = lloguerService.cancelarReserva(codi, client.getDni());
+            if (cancelada) {
+                System.out.println("Reserva cancel·lada correctament.");
+            } else {
+                System.out.println("No s'ha pogut cancel·lar la reserva.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error en cancel·lar reserva: " + e.getMessage());
+        }
+    }
+
+    // Mètode per comparar vehicles
+    private void compararVehicles() {
+        System.out.println("\n--- COMPARAR VEHICLES ---");
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            String matricula = AjudaEntrada.demanarText("Introdueix matrícula del vehicle " + (i+1) + " (o 'fi' per acabar): ");
+
+            if (matricula.equalsIgnoreCase("fi")) break;
+
+            Vehicle v = vehicleService.getVehicleByMatricula(matricula);
+            if (v != null) {
+                vehicles.add(v);
+            } else {
+                System.out.println("Vehicle no trobat.");
+                i--; // Per tornar a demanar aquest
+            }
+        }
+
+        if (!vehicles.isEmpty()) {
+            System.out.println("\nCOMPARATIVA DE VEHICLES:");
+            System.out.println("| Matrícula | Marca     | Model    | Preu/dia | Etiqueta | Motor    |");
+            System.out.println("|-----------|-----------|----------|----------|----------|----------|");
+
+            for (Vehicle v : vehicles) {
+                System.out.printf("| %-9s | %-9s | %-8s | %8.2f€ | %-8s | %-8s |%n",
+                        v.getMatricula(), v.getMarca(), v.getModel(), v.getPreuBase(),
+                        v.getEtiquetaAmbiental(), v.getMotor().getTipus());
+            }
+        }
+    }
