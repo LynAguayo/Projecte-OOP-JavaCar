@@ -43,3 +43,25 @@ public class ClientMenu {
             }
         } while (opcio != 5);
     }
+
+    private void menuLloguer() {
+        int opcio;
+        do {
+            System.out.println("\n--- LLOGUER DE VEHICLES ---");
+            System.out.println("1. Veure disponibilitat");
+            System.out.println("2. Realitzar lloguer");
+            System.out.println("3. Cancel·lar lloguer");
+            System.out.println("4. Tornar");
+            System.out.print("Selecciona una opció: ");
+
+            opcio = AjudaEntrada.demanarNumero("", 1, 4);
+
+            switch (opcio) {
+                case 1 -> mostrarDisponibilitat();
+                case 2 -> realitzarLloguer();
+                case 3 -> cancelarLloguer();
+                case 4 -> System.out.println("Tornant...");
+                default -> System.out.println("Opció no vàlida");
+            }
+        } while (opcio != 4);
+    }
