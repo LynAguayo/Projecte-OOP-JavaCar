@@ -114,3 +114,33 @@ public class Lloguer {
     public void setDies(int dies) {
         this.dies = dies;
     }
+
+    // Pasa el lloguer a String per guardar en arxiu
+    public String toFileString() {
+        return String.join(";",
+                id, dniClient, matricula,
+                dataInici, dataFinal,
+                String.valueOf(dies),
+                String.valueOf(preuTotal),
+                estat.name()
+        );
+    }
+
+    // Crear un lloguer des d'un String de fitxer
+    public static Lloguer fromFileString(String linia) {
+        String[] parts = linia.split(";");
+        if (parts.length != 8) return null;
+
+        try {
+            Lloguer ll = new Lloguer(parts[1], parts[2], parts[3], Integer.parseInt(parts[5]));
+            ll.id = parts[0];
+            ll.dataFinal = parts[4];
+            ll.preuTotal = Double.parseDouble(parts[6]);
+            ll.estat = Estat.valueOf(parts[7]);
+            return ll;
+        } catch (Exception e) {
+            System.err.println("Error parsing Lloguer: " + e.getMessage());
+            return null;
+        }
+    }
+}
