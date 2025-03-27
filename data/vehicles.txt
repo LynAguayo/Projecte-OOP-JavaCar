@@ -1,0 +1,4 @@
+Cotxe;1234ABC;Seat;Ibiza;35.0;gasolina;110;4;5
+Moto;5678DEF;Honda;CBR;25.0;gasolina;125;2;600
+Furgoneta;9012GHI;Ford;Transit;45.0;diesel;150;4;1200
+Cotxe;3456JKL;Tesla;Model3;50.0;electric;300;4;5

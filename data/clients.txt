@@ -1,0 +1,4 @@
+12345678A;Joan Garcia;Carrer Major 123;150
+87654321B;Maria Lopez;Avinguda Diagonal 456;50
+11223344C;Pere Marti;Plaça Catalunya 78;0
+12345678X;Evelyn;Carrer Arago 2;75
