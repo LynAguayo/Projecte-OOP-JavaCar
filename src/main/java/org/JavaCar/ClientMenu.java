@@ -243,3 +243,129 @@ public class ClientMenu {
             }
         }
     }
+
+    // Mètode per gestionar el compte del client
+    private void menuCompte() {
+        int opcio;
+        do {
+            System.out.println("\n--- EL MEU COMPTE ---");
+            System.out.println("1. Veure punts ecològics");
+            System.out.println("2. Canjear punts");
+            System.out.println("3. Historial de lloguers");
+            System.out.println("4. Valorar vehicles");
+            System.out.println("5. Modificar dades");
+            System.out.println("6. Tornar");
+            System.out.print("Selecciona una opció: ");
+
+            opcio = AjudaEntrada.demanarNumero("", 1, 6);
+
+            switch (opcio) {
+                case 1 -> veurePunts();
+                case 2 -> canjearPunts();
+                case 3 -> historialLloguers();
+                case 4 -> valorarVehicle();
+                case 5 -> modificarDades();
+                case 6 -> System.out.println("Tornant...");
+                default -> System.out.println("Opció no vàlida");
+            }
+        } while (opcio != 6);
+    }
+
+    // Mètodes per veure punts ecològics
+    private void veurePunts() {
+        // Obtener los puntos actualizados directamente del servicio
+        int punts = clientService.obtenirPunts(client.getDni());
+        System.out.println("\nEls teus punts ecològics: " + punts);
+        System.out.println("Pots canviar 100 punts per 5€ de descompte.");
+    }
+
+    // Mètode per canjear punts (no es guarda en arxiu)
+    private void canjearPunts() {
+        veurePunts();
+        int punts = AjudaEntrada.demanarNumero("\nPunts a canviar (múltiples de 100): ", 100, 10000);
+
+        try {
+            double descompte = clientService.canviarPunts(client.getDni(), punts);
+            System.out.printf("Has obtingut %.2f€ de descompte per al proper lloguer.%n", descompte);
+            veurePunts();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    // Mètode per mostrar l'historial de lloguers
+    private void historialLloguers() {
+        System.out.println("\n--- HISTORIAL DE LLOGUERS ---");
+        List<Lloguer> lloguers = lloguerService.obtenirHistorial(client.getDni());
+
+        if (lloguers.isEmpty()) {
+            System.out.println("No tens cap lloguer registrat.");
+        } else {
+            System.out.println("| Estat      | Data       | Matrícula | Model    | Dies | Total   |");
+            System.out.println("|------------|------------|-----------|----------|------|---------|");
+
+            for (Lloguer ll : lloguers) {
+                Vehicle v = vehicleService.getVehicleByMatricula(ll.getMatricula());
+                String model = (v != null) ? v.getModel() : "Desconegut";
+                String estat = switch(ll.getEstat()) {
+                    case ACTIU -> "Actiu";
+                    case PENDENT -> "Pendent";
+                    case COMPLETAT -> "Completat";
+                    case CANCELAT -> "Cancel·lat";
+                };
+
+                System.out.printf("| %-10s | %-10s | %-9s | %-8s | %4d | %7.2f€ |%n",
+                        estat, ll.getDataInici(), ll.getMatricula(), model,
+                        ll.getDies(), ll.getPreuTotal());
+            }
+        }
+    }
+
+    // Mètode per valorar un vehicle
+    private void valorarVehicle() {
+        historialLloguers();
+        String matricula = AjudaEntrada.demanarText("\nIntrodueix matrícula del vehicle a valorar: ");
+        int puntuacio = AjudaEntrada.demanarNumero("Puntuació (1-5 estrelles): ", 1, 5);
+        String comentari = AjudaEntrada.demanarText("Comentari (opcional): ");
+
+        try {
+            boolean valorat = lloguerService.afegirValoracio(client.getDni(), matricula, puntuacio, comentari);
+            if (valorat) {
+                System.out.println("Gràcies per la teva valoració!");
+            } else {
+                System.out.println("No has llogat aquest vehicle o ja l'has valorat.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error en valorar: " + e.getMessage());
+        }
+    }
+
+    // Mètode per modificar les dades del client
+    private void modificarDades() {
+        System.out.println("\n--- MODIFICAR DADES ---");
+        System.out.println("Dades actuals:");
+        System.out.println("Nom: " + client.getNom());
+        System.out.println("Adreça: " + client.getAdreca());
+
+        // Modificar Nom
+        if (AjudaEntrada.demanarConfirmacio("\nVols canviar el nom?")) {
+            String nouNom = AjudaEntrada.demanarText("Introdueix el nou nom: ");
+            client.setNom(nouNom);
+        }
+
+        // Modificar Adreça
+        if (AjudaEntrada.demanarConfirmacio("Vols canviar l'adreça?")) {
+            String novaAdreca = AjudaEntrada.demanarText("Introdueix la nova adreça: ");
+            client.setAdreca(novaAdreca);
+        }
+
+        try {
+            clientService.actualitzarClient(client);
+            System.out.println("\nDades actualitzades correctament.");
+            System.out.println("Nom actual: " + client.getNom());
+            System.out.println("Adreça actual: " + client.getAdreca());
+        } catch (Exception e) {
+            System.out.println("Error en actualitzar: " + e.getMessage());
+        }
+    }
+}
