@@ -136,3 +136,26 @@ public class ClientMenu {
             System.out.println("Error en cancel·lar: " + e.getMessage());
         }
     }
+
+    // Mètode per gestionar les reserves
+    private void menuReserves() {
+        int opcio;
+        do {
+            System.out.println("\n--- GESTIÓ DE RESERVES ---");
+            System.out.println("1. Fer reserva");
+            System.out.println("2. Modificar reserva");
+            System.out.println("3. Cancel·lar reserva");
+            System.out.println("4. Tornar");
+            System.out.print("Selecciona una opció: ");
+
+            opcio = AjudaEntrada.demanarNumero("", 1, 4);
+
+            switch (opcio) {
+                case 1 -> ferReserva();
+                case 2 -> modificarReserva();
+                case 3 -> cancelarReserva();
+                case 4 -> System.out.println("Tornant...");
+                default -> System.out.println("Opció no vàlida");
+            }
+        } while (opcio != 4);
+    }
