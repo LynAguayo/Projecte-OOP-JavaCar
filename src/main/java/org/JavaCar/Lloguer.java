@@ -53,3 +53,64 @@ public class Lloguer {
             return dataInici;
         }
     }
+
+    // Mètodes per canviar l'estat
+    public void marcarCompletat() {
+        this.estat = Estat.COMPLETAT;
+    }
+
+    public void cancelar() {
+        this.estat = Estat.CANCELAT;
+    }
+
+    // Getters i setters
+    public String getId() {
+        return id;
+    }
+
+    public String getDniClient() {
+        return dniClient;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public String getDataInici() {
+        return dataInici;
+    }
+
+    public String getDataFinal() {
+        return dataFinal;
+    }
+
+    public int getDies() {
+        return dies;
+    }
+
+    public double getPreuTotal() {
+        return preuTotal;
+    }
+
+    public Estat getEstat() {
+        return estat;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    public void setPreuTotal(double preuTotal) {
+        this.preuTotal = preuTotal;
+    }
+
+    public void setDataInici(String dataInici) {
+        this.dataInici = dataInici;
+    }
+
+    public void setDataFinal(String dataFinal) {
+        this.dataFinal = dataFinal;
+    }
+
+    public void setDies(int dies) {
+        this.dies = dies;
+    }
