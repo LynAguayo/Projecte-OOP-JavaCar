@@ -5,81 +5,80 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VehicleService {
+    // Constants
     private static final String DATA_DIR = "data";
     private static final String VEHICLES_FILE = DATA_DIR + "/vehicles.txt";
 
-    public void afegirVehicle(Vehicle vehicle) {
-        try (PrintWriter out = new PrintWriter(new FileWriter(VEHICLES_FILE, true))) {
-            out.println(vehicle.toFileString());
-        } catch (IOException e) {
-            System.err.println("Error al guardar vehicle: " + e.getMessage());
+    // Constructor que crea el directori si no existeix
+    public VehicleService() {
+        crearDirectoriSiNoExisteix();
+    }
+
+    // Crea el directori si no existeix
+    private void crearDirectoriSiNoExisteix() {
+        File dir = new File(DATA_DIR);
+        if (!dir.exists()) {
+            dir.mkdir();
         }
     }
 
-    public Vehicle getVehicleByMatricula(String matricula) {
+    // Retorna tots els vehícles del sistema
+    public List<Vehicle> obtenirTotsVehicles() {
+        List<Vehicle> vehicles = new ArrayList<>();
+
         try (BufferedReader br = new BufferedReader(new FileReader(VEHICLES_FILE))) {
             String linia;
             while ((linia = br.readLine()) != null) {
-                Vehicle v = Vehicle.fromFileString(linia);
-                if (v.getMatricula().equalsIgnoreCase(matricula)) {
-                    return v;
+                Vehicle vehicle = Vehicle.fromFileString(linia);
+                if (vehicle != null) {
+                    vehicles.add(vehicle);
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error llegint vehicles: " + e.getMessage());
+            System.out.println("Error en llegir vehicles: " + e.getMessage());
+        }
+
+        return vehicles;
+    }
+
+    // Retorna un vehículo por matrícula
+    public Vehicle getVehicleByMatricula(String matricula) {
+        List<Vehicle> vehicles = obtenirTotsVehicles();
+
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.getMatricula().equalsIgnoreCase(matricula)) {
+                return vehicle;
+            }
         }
         return null;
     }
 
-    public List<Vehicle> obtenirVehiclesDisponibles() {
-        // Implementación simplificada - todos están disponibles
-        return obtenirTotsVehicles();
+    // Verifica si un vehícle existeix per matrícula
+    public boolean existeixVehicle(String matricula) {
+        return getVehicleByMatricula(matricula) != null;
     }
 
-    public List<Vehicle> obtenirTotsVehicles() {
-        List<Vehicle> vehicles = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(VEHICLES_FILE))) {
-            String linia;
-            while ((linia = br.readLine()) != null) {
-                vehicles.add(Vehicle.fromFileString(linia));
-            }
+    // Afegeix un nou vehicle al sistema
+    public void afegirVehicle(Vehicle vehicle) {
+        if (existeixVehicle(vehicle.getMatricula())) {
+            throw new IllegalArgumentException("Ja existeix un vehicle amb aquesta matrícula");
+        }
+
+        try (PrintWriter out = new PrintWriter(new FileWriter(VEHICLES_FILE, true))) {
+            out.println(vehicle.toFileString());
         } catch (IOException e) {
-            System.err.println("Error llegint vehicles: " + e.getMessage());
+            System.out.println("Error en afegir vehicle: " + e.getMessage());
         }
-        return vehicles;
     }
 
-    public List<Vehicle> filtrarVehicles(String tipus) {
-        List<Vehicle> vehicles = obtenirTotsVehicles();
-        List<Vehicle> filtrats = new ArrayList<>();
-
-        for (Vehicle v : vehicles) {
-            if (v.getEtiquetaAmbiental().equalsIgnoreCase(tipus) ||
-                    v.getMotor().getTipus().equalsIgnoreCase(tipus)) {
-                filtrats.add(v);
-            }
-        }
-        return filtrats;
-    }
-
-    public void actualitzarVehicle(Vehicle vehicle) {
-        List<Vehicle> vehicles = obtenirTotsVehicles();
-        for (int i = 0; i < vehicles.size(); i++) {
-            if (vehicles.get(i).getMatricula().equalsIgnoreCase(vehicle.getMatricula())) {
-                vehicles.set(i, vehicle);
-                break;
-            }
-        }
-        guardarTotsVehicles(vehicles);
-    }
-
-    public boolean eliminarVehicle(String matricula) {
+    // Actualizar un vehícle existent
+    public void actualitzarVehicle(Vehicle vehicleActualitzat) {
         List<Vehicle> vehicles = obtenirTotsVehicles();
         boolean trobat = false;
 
         for (int i = 0; i < vehicles.size(); i++) {
-            if (vehicles.get(i).getMatricula().equalsIgnoreCase(matricula)) {
-                vehicles.remove(i);
+            if (vehicles.get(i).getMatricula().equalsIgnoreCase(vehicleActualitzat.getMatricula())) {
+                vehicles.set(i, vehicleActualitzat);
                 trobat = true;
                 break;
             }
@@ -87,17 +86,19 @@ public class VehicleService {
 
         if (trobat) {
             guardarTotsVehicles(vehicles);
+        } else {
+            throw new IllegalArgumentException("No s'ha trobat el vehicle a actualitzar");
         }
-        return trobat;
     }
 
+    // Guarda tots els vehícles
     private void guardarTotsVehicles(List<Vehicle> vehicles) {
         try (PrintWriter out = new PrintWriter(new FileWriter(VEHICLES_FILE))) {
-            for (Vehicle v : vehicles) {
-                out.println(v.toFileString());
+            for (Vehicle vehicle : vehicles) {
+                out.println(vehicle.toFileString());
             }
         } catch (IOException e) {
-            System.err.println("Error al guardar vehicles: " + e.getMessage());
+            System.out.println("Error al guardar vehicles: " + e.getMessage());
         }
     }
 }
