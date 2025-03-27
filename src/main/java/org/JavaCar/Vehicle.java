@@ -1,6 +1,6 @@
 package org.JavaCar;
 
-public abstract class Vehicle implements Llogable{
+public abstract class Vehicle implements Llogable {
     // Atributs
     protected String matricula;
     protected String marca;
