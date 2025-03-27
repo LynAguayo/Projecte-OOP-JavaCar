@@ -37,3 +37,30 @@ public class AjudaEntrada {
         } while (input.isEmpty());
         return input;
     }
+
+    // Funció per validar DNI
+    public static String demanarDNI(String missatge) {
+        String dni;
+        do {
+            System.out.print(missatge);
+            dni = scanner.nextLine().trim().toUpperCase();
+            if (!dni.matches("^[0-9]{8}[A-Z]$")) {
+                System.out.println("DNI incorrecte. Exemple: 12345678X");
+            }
+        } while (!dni.matches("^[0-9]{8}[A-Z]$"));
+        return dni;
+    }
+
+    // Funció per demanar confirmació (S/N)
+    public static boolean demanarConfirmacio(String missatge) {
+        String resposta;
+        do {
+            System.out.print(missatge + " (s/n): ");
+            resposta = scanner.nextLine().trim().toLowerCase();
+            if (!resposta.equals("s") && !resposta.equals("n")) {
+                System.out.println("Respon 's' per sí o 'n' per no.");
+            }
+        } while (!resposta.equals("s") && !resposta.equals("n"));
+        return resposta.equals("s");
+    }
+}
