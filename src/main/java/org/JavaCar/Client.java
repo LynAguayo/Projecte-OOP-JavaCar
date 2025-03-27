@@ -1,55 +1,19 @@
-package org.JavaCar;
-
 public class Client {
-    // Variables
+    // Atributs
     private String dni;
     private String nom;
     private String adreca;
-    private String tipus; // si és "client" o "admin"
+    private int punts;  // Puntos ecológicos
 
     // Constructor
-    public Client(String dni, String nom, String adreca, String tipus) {
+    public Client(String dni, String nom, String adreca) {
+        this(dni, nom, adreca, 0);
+    }
+
+    // Constructor amb punts
+    public Client(String dni, String nom, String adreca, int punts) {
         this.dni = dni;
         this.nom = nom;
         this.adreca = adreca;
-        this.tipus = tipus;
+        this.punts = punts;
     }
-
-    // Getters
-    public String getDni() {
-        return dni;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public String getAdreca() {
-        return adreca;
-    }
-
-    public String getTipus() {
-        return tipus;
-    }
-
-    // Setters
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public void setAdreca(String adreca) {
-        this.adreca = adreca;
-    }
-
-    public void setTipus(String tipus) {
-        this.tipus = tipus;
-    }
-
-    public String toFileString() {
-        return dni + ";" + nom + ";" + adreca + ";" + tipus;
-    }
-    public static Client fromFileString(String linia) {
-        String[] parts = linia.split(";");
-        return new Client(parts[0], parts[1], parts[2], parts[3]);
-    }
-}
