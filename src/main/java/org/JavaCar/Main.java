@@ -86,8 +86,56 @@ public class Main {
             System.out.println("Client no trobat.");
             boolean volRegistrar = AjudaEntrada.demanarConfirmacio("Vols registrar-te?");
             if (volRegistrar) {
-                //registrarNouClient();
+                registrarNouClient();
             }
+        }
+    }
+
+    // Funció per gestionar el menú d'administrador
+    private static void iniciarMenuAdmin() {
+        System.out.println("\n--- ACCÉS ADMIN ---");
+        System.out.println("Credencials --> Usuari: " + ADMIN_USER + " Contrasenya: " + ADMIN_PWD);
+
+        String usuari = AjudaEntrada.demanarText("Usuari admin: ");
+        String contrasenya = AjudaEntrada.demanarText("Contrasenya: ");
+
+        if (ADMIN_USER.equals(usuari) && ADMIN_PWD.equals(contrasenya)) {
+            System.out.println("Accés concedit. Mode administrador activat.");
+
+            // Inicialitza serveis
+            VehicleService vehicleService = new VehicleService();
+            LloguerService lloguerService = new LloguerService(vehicleService);
+            ClientService clientService = new ClientService();
+
+            // Mostra menú admin
+            AdminMenu adminMenu = new AdminMenu(vehicleService, lloguerService, clientService);
+            adminMenu.mostrarMenu();
+        } else {
+            System.out.println("Credencials incorrectes. Accés denegat.");
+        }
+    }
+
+    // Funció per registrar un nou client
+    private static void registrarNouClient() {
+        System.out.println("\n--- REGISTRE NOU CLIENT ---");
+        String dni = AjudaEntrada.demanarDNI("DNI: ");
+
+        // Verifica si el client ja existeix
+        ClientService clientService = new ClientService();
+        if (clientService.trobarClient(dni) != null) {
+            System.out.println("Aquest DNI ja està registrat.");
+            return;
+        }
+
+        String nom = AjudaEntrada.demanarText("Nom complet: ");
+        String adreca = AjudaEntrada.demanarText("Adreça: ");
+
+        try {
+            Client nouClient = new Client(dni, nom, adreca);
+            clientService.guardarClient(nouClient);
+            System.out.println("Registre completat. Ara pots iniciar sessió.");
+        } catch (Exception e) {
+            System.out.println("Error en registrar: " + e.getMessage());
         }
     }
 }
